@@ -10,6 +10,10 @@ const port = 3000; // Port server backend
 // Gunakan middleware bodyParser untuk menguraikan JSON dari permintaan
 app.use(bodyParser.json());
 
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '/index.html'));
+});
+
 // Definisikan endpoint untuk menerima pesan dari klien (HTML/JavaScript)
 app.post('/sendMessage', (req, res) => {
     // Ambil pesan dari permintaan POST
