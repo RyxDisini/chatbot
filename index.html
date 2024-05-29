@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChatBot Made By RYX</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-image: url('https://telegra.ph/file/47541562da77ff089d764.png'); /* Ganti dengan URL background yang diinginkan */
+        background-size: cover;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .chat-container {
+        max-width: 500px;
+        margin: 0 auto;
+        background-color: rgba(255, 255, 255, 0.7);
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .chat-container p {
+        padding: 10px 15px;
+        border-radius: 20px;
+        margin: 10px 0;
+    }
+
+    .user {
+        background-color: #000000;
+        color: white;
+        text-align: right;
+    }
+
+    .bot {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-top: 20px;
+        box-sizing: border-box;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+</style>
+</head>
+<body>
+<div class="chat-container">
+    <div id="chat-log"></div>
+    <input type="text" id="user-input" placeholder="Type your message...">
+    <input type="submit" value="Send" onclick="sendMessage()">
+</div>
+
+<script>
+    function sendMessage() {
+        var userMessage = document.getElementById("user-input").value;
+        appendMessage('user', userMessage);
+
+        // Kirim pesan ke API OpenAI
+        fetch('/sendMessage', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message: userMessage }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            appendMessage('bot', data.message);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+
+    function appendMessage(sender, message) {
+        var chatLog = document.getElementById("chat-log");
+        var messageElement = document.createElement("p");
+        messageElement.textContent = message;
+        messageElement.classList.add(sender);
+        chatLog.appendChild(messageElement);
+    }
+</script>
+
+</body>
+</html>
